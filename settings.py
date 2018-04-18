@@ -66,6 +66,7 @@ ROBOTSTXT_OBEY = True
 # See https://doc.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
     'immoscraper.pipelines.UrlDigesterPipeline': 1,
+    'immoscraper.pipelines.MongoPipeline': 100,
     'immoscraper.pipelines.ImmoscraperJsonLinesPipeline': 300,
 }
 
