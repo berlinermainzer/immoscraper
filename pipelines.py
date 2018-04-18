@@ -6,6 +6,15 @@
 # See: https://doc.scrapy.org/en/latest/topics/item-pipeline.html
 
 import json
+import hashlib
+
+class UrlDigesterPipeline(object):
+
+    def process_item(self, item, spider):
+        data = dict(item)
+        digest = hashlib.md5(data['url'].encode("utf8")).hexdigest()
+        data['url_hash'] = digest
+        return data
 
 class ImmoscraperJsonLinesPipeline(object):
 
