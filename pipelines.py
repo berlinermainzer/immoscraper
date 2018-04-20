@@ -36,7 +36,7 @@ class MongoPipeline(object):
     collection_name = 'scrapy_items'
 
     def __init__(self):
-        self.mongo_uri = 'mongodb://localhost:27107/'
+        self.mongo_uri = 'mongodb://localhost'
         self.mongo_db = 'immodb'
 
     def open_spider(self, spider):
