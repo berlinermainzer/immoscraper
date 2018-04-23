@@ -7,26 +7,27 @@
 
 import json
 import hashlib
+from scrapy.exporters import JsonLinesItemExporter
 
 class UrlDigesterPipeline(object):
 
     def process_item(self, item, spider):
-        data = dict(item)
-        digest = hashlib.md5(data['url'].encode("utf8")).hexdigest()
-        data['url_hash'] = digest
-        return data
+        digest = hashlib.md5(item['url'].encode("utf8")).hexdigest()
+        item['url_hash'] = digest
+        return item
 
 class ImmoscraperJsonLinesPipeline(object):
 
     def open_spider(self, spider):
-        self.file = open('items.jl', 'w')
+        file = open('items.jl', 'wb')
+        self.jsonLineExporter = JsonLinesItemExporter(file) 
 
     def close_spider(self, spider):
-        self.file.close()
+        self.jsonLineExporter.finish_exporting()
+        self.jsonLineExporter.file.close()
 
     def process_item(self, item, spider):
-        line = json.dumps(dict(item)) + "\n"
-        self.file.write(line)
+        self.jsonLineExporter.export_item(item)
         return item
 
 import pymongo
