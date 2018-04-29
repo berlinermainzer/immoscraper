@@ -31,10 +31,11 @@ class ImmoscraperJsonLinesPipeline(object):
         return item
 
 import pymongo
+import logging
 
 class MongoPipeline(object):
 
-    collection_name = 'scrapy_items'
+    collection_name = 'items'
 
     def __init__(self):
         self.mongo_uri = 'mongodb://localhost'
@@ -48,5 +49,14 @@ class MongoPipeline(object):
         self.client.close()
 
     def process_item(self, item, spider):
-        self.db[self.collection_name].insert_one(dict(item))
+        collection = self.db[self.collection_name]
+        logging.debug('Using db %s, %s', self.db, collection)
+        
+        cnt = collection.find({"url_hash": item['url_hash'] }).count()
+        if cnt > 0:
+            logging.debug('Skipping item %s, found it %i times', item['url_hash'], cnt)
+        else:
+            logging.debug('Inserting item %s', item['url_hash'])
+            collection.insert_one(dict(item))
+            
         return item        
