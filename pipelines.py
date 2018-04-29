@@ -16,6 +16,14 @@ class UrlDigesterPipeline(object):
         item['url_hash'] = digest
         return item
 
+import datetime
+
+class FirstSeenPipeline(object):
+
+    def process_item(self, item, spider):
+        item['first_seen'] = datetime.datetime.now()
+        return item
+
 class ImmoscraperJsonLinesPipeline(object):
 
     def open_spider(self, spider):
