@@ -19,4 +19,6 @@ class ImmoscraperItem(scrapy.Item):
     picture_url = scrapy.Field(output_processor=TakeFirst())
     reported = scrapy.Field(output_processor=TakeFirst())
     first_seen = scrapy.Field(output_processor=TakeFirst())
+    has_been_reported = scrapy.Field(output_processor=TakeFirst())
+
  

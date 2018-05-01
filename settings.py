@@ -67,6 +67,7 @@ ROBOTSTXT_OBEY = True
 ITEM_PIPELINES = {
     'immoscraper.pipelines.UrlDigesterPipeline': 1,
     'immoscraper.pipelines.FirstSeenPipeline': 2,
+    'immoscraper.pipelines.HasBeenReportedPipeline' : 3,
     'immoscraper.pipelines.MongoPipeline': 100,
     'immoscraper.pipelines.ImmoscraperJsonLinesPipeline': 300,
 }

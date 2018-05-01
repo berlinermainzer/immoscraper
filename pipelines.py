@@ -24,6 +24,14 @@ class FirstSeenPipeline(object):
         item['first_seen'] = datetime.datetime.now()
         return item
 
+
+class HasBeenReportedPipeline(object):
+
+    def process_item(self, item, spider):
+        item['has_been_reported'] = False
+        return item
+
+
 class ImmoscraperJsonLinesPipeline(object):
 
     def open_spider(self, spider):
