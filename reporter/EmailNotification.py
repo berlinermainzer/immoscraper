@@ -139,7 +139,6 @@ class EmailNotification(object):
         for edata in email_data:
             try:
                 email = edata["email"]
-                name = edata["name"]
                 subject = edata["subject"]
                 data = edata["data"]
             except Exception as e:
@@ -168,8 +167,7 @@ def main(argv):
     
     elist = [{
     	"email": "johannesfelten@gmail.com",
-    	"name": "Johannes",
-    	"subject": "Hi from Python",
+    	"subject": "ImmoScraper Report",
     	"data" : { 
             "dear": "Johannes",
             "msg": "Hola mundo"
