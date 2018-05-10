@@ -68,6 +68,8 @@ def main(argv):
         # Add receiver name to template data
         render_data = data
         render_data['name'] = receiver['name']
+
+        # Render message
         msg = reporter.mailrender(render_data, 'report')
         
         logger.info(msg)
