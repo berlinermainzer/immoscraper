@@ -45,7 +45,10 @@ class Reporter(object):
 
         data = {
             'subject' : 'ImmoScraper Report',
-            'email_receivers' : ['xyz@gmail.com', 'abc@gmail.com'],
+            'email_receivers' : [
+                { 'name' : 'Johannes', 'email' : 'xyz@gmail.com'},
+                { 'name' : 'Kerstin', 'email' : 'abc@gmail.com'}
+            ],
             'entries' : entries
         }
 
@@ -56,15 +59,18 @@ def main(argv):
         
     reporter = Reporter()
 
-    elist = reporter.getData()
-    # pprint.pprint(elist)
-    # pprint.pprint("----------------")
+    data = reporter.getData()
 
-    receivers = elist.pop('email_receivers')
+    email_receivers = data.pop('email_receivers')
+    for receiver in email_receivers:
+        logger.info('---- Receiver: ' + receiver['name'])
 
-    msg = reporter.mailrender(elist, 'report')
-    logger.info('----')
-    logger.info(msg)
+        # Add receiver name to template data
+        render_data = data
+        render_data['name'] = receiver['name']
+        msg = reporter.mailrender(render_data, 'report')
+        
+        logger.info(msg)
 
     reporter.close()
 
