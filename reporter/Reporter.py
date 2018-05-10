@@ -32,19 +32,22 @@ class Reporter(object):
         template = template + ".tmpl"
         logger.info("Rendering template '%s'" % (template))
         text = self.env.get_template(template)
-        msg = text.render(data)
 
-        logger.info(msg)
+        msg = text.render(data=data)
+        return msg
+
 
     def getData(self):
 
-        data = [
-            { "subject" : "ImmoScraper Report" },
-            { "email_receivers" : ["xyz@gmail.com", "abc@gmail.com"] }
-        ]
+        entries = []
+        for el in self.mongo_collection.find({'url_hash' : { '$in' : ['ffd8505ea2340807fbb0e49ff1a5d23d', '80fcd534eb9b341a09b7f85f22c3a3e7']}}):
+            entries.append(el)
 
-        for el in self.mongo_collection.find({'url_hash': 'ffd8505ea2340807fbb0e49ff1a5d23d'}):
-            data.append({"entries" : el})
+        data = {
+            'subject' : 'ImmoScraper Report',
+            'email_receivers' : ['xyz@gmail.com', 'abc@gmail.com'],
+            'entries' : entries
+        }
 
         return data
 
@@ -54,10 +57,14 @@ def main(argv):
     reporter = Reporter()
 
     elist = reporter.getData()
+    # pprint.pprint(elist)
+    # pprint.pprint("----------------")
 
-    for el in elist:
-        pprint.pprint(el)
-        #reporter.mailrender(el['data'], 'report')
+    receivers = elist.pop('email_receivers')
+
+    msg = reporter.mailrender(elist, 'report')
+    logger.info('----')
+    logger.info(msg)
 
     reporter.close()
 
