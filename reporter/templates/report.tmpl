@@ -18,11 +18,24 @@
     
     {% for entry in data.entries %}
     <p>
-        <h3>{{ entry.title }}</h3>
-        Preis: {{ entry.price }}
-        <a href="http://google.com" class="ui medium image">
-            <img src="{{ entry.picture_url }}">
-        </a>
+        <div class="ui segment">
+            <a href="http://google.com" class="ui medium bordered rounded left floated image">
+                <img src="{{ entry.picture_url }}">
+            </a>
+            <div class="ui small header">{{ entry.title }}</div>
+            <p>
+                Haustyp: {{ entry.house_type }}
+            </p>
+            <p>
+                Größe Haus: {{ entry.size_house }}qm
+            </p>
+            <p>
+                Größe Grundstück: {{ entry.size_ground }}qm
+            </p>
+            <p>
+                Preis: {{ entry.price }} EUR
+            </p>
+        </div>
     </p>
     {% endfor %}
 
