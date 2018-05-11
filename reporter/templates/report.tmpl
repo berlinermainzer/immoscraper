@@ -19,22 +19,30 @@
     {% for entry in data.entries %}
     <p>
         <div class="ui segment">
-            <a href="http://google.com" class="ui medium bordered rounded left floated image">
+            <a target="_blank" href="{{ entry.url }}" class="ui medium bordered rounded left floated image">
                 <img src="{{ entry.picture_url }}">
             </a>
             <div class="ui small header">{{ entry.title }}</div>
-            <p>
-                Haustyp: {{ entry.house_type }}
-            </p>
-            <p>
-                Größe Haus: {{ entry.size_house }}qm
-            </p>
-            <p>
-                Größe Grundstück: {{ entry.size_ground }}qm
-            </p>
-            <p>
-                Preis: {{ entry.price }} EUR
-            </p>
+            <table class="ui very basic collapsing celled table">
+                <tbody>
+                    <tr>
+                        <td>Haustyp:</td>
+                        <td>{{ entry.house_type }}</td>
+                    </tr>
+                    <tr>
+                        <td>Größe Haus:</td>
+                        <td>{{ entry.size_house }} qm</td>
+                    </tr>
+                    <tr>
+                        <td>Größe Grundstück:</td>
+                        <td>{{ entry.size_ground }} qm</td>
+                    </tr>
+                    <tr>
+                        <td>Preis:</td>
+                        <td>{{ entry.price }} EUR</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </p>
     {% endfor %}
