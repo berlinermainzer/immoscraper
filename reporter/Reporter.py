@@ -40,7 +40,7 @@ class Reporter(object):
     def getData(self):
 
         entries = []
-        for el in self.mongo_collection.find({'url_hash' : { '$in' : ['ffd8505ea2340807fbb0e49ff1a5d23d', '80fcd534eb9b341a09b7f85f22c3a3e7']}}):
+        for el in self.mongo_collection.find({'url_hash' : { '$in' : ['dfb8cf90b7a48f51dd4ce179b57f4ee6', '80fcd534eb9b341a09b7f85f22c3a3e7']}}):
             entries.append(el)
 
         data = {

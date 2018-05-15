@@ -1,4 +1,5 @@
 import scrapy
+from scrapy.selector import Selector
 from scrapy.loader import ItemLoader
 from immoscraper.items import ImmoscraperItem
 
@@ -9,7 +10,7 @@ class BeyerSpider(scrapy.Spider):
     ]
 
     def parse(self, response):
-    
+
         for offer in response.xpath("//div[@class='col-sm-6 col-md-4 immothumbs']"):
             #print(offer)
             l = ItemLoader(item=ImmoscraperItem(), response=response)
@@ -20,7 +21,19 @@ class BeyerSpider(scrapy.Spider):
             l.add_value('size_house',  offer.xpath("div[1]/div[3]/div[2]/text()").extract_first().replace(" m²", ""))
             l.add_value('size_ground',  offer.xpath("div[1]/div[4]/div[2]/text()").extract_first().replace(" m²", ""))
             l.add_value('picture_url', offer.xpath('a/img/@src').extract_first())
-            # TODO: follow link of url and get description 
-            l.add_value('description', 'n/a')
-            yield l.load_item()
+
+            # follow link of url and get description
+            desc_url = offer.xpath('a/@href').extract_first()
+            request = scrapy.Request(desc_url, callback=self.parseDescription)
+            request.meta['loader'] = l
+            yield request
+ 
+
+    def parseDescription(self, response):
+        #print("################# getting desc")
+        res = response.xpath('//*[@id="page"]/div[1]/div[4]/div[2]/p/text()').extract_first().strip()
+        l = response.meta['loader']
+        l.selector = Selector(response)
+        l.add_value('description', res)
+        return l.load_item()
         
