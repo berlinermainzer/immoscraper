@@ -22,24 +22,30 @@
             <a target="_blank" href="{{ entry.url }}" class="ui medium bordered rounded left floated image">
                 <img src="{{ entry.picture_url }}">
             </a>
-            <div class="ui small header">{{ entry.title }}</div>
+            <thead>
+					<tr><th class="single line">{{ entry.title }}</th></td>
+            </thead>
             <table class="ui very basic collapsing celled table">
                 <tbody>
                     <tr>
-                        <td>Haustyp:</td>
+                        <td class="collapsing">Haustyp:</td>
                         <td>{{ entry.house_type }}</td>
                     </tr>
                     <tr>
-                        <td>Größe Haus:</td>
+                        <td class="collapsing">Größe Haus:</td>
                         <td>{{ entry.size_house }} qm</td>
                     </tr>
                     <tr>
-                        <td>Größe Grundstück:</td>
+                        <td class="collapsing">Größe Grundstück:</td>
                         <td>{{ entry.size_ground }} qm</td>
                     </tr>
                     <tr>
-                        <td>Preis:</td>
+                        <td class="collapsing">Preis:</td>
                         <td>{{ entry.price }} EUR</td>
+                    </tr>
+                    <tr>
+                        <td class="collapsing">Beschreibung:</td>
+                        <td>{{ entry.description }}</td>
                     </tr>
                 </tbody>
             </table>
