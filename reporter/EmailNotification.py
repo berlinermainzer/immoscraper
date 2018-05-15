@@ -15,9 +15,6 @@ import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 
-from jinja2 import Environment, FileSystemLoader
-
-
 
 class EmailNotification(object):
 
@@ -29,7 +26,7 @@ class EmailNotification(object):
     #EMAIL_PORT=587
     
     def __init__(self, smtp, port, fromuser, fromemail, login=None, 
-                 password=None, templatedir='templates', logger=None):
+                 password=None, logger=None):
         self.logger = logger
         if not logger:
             logging.basicConfig()
@@ -40,19 +37,8 @@ class EmailNotification(object):
         self.reply = fromemail
         self.smtplogin = login
         self.smtppass = password
-        if os.path.isdir(templatedir):
-            self.templatedir = templatedir
-        else:
-            self.templatedir = os.path.join(os.path.abspath(os.path.dirname(__file__)), templatedir)
-        self.env = Environment(loader=FileSystemLoader(self.templatedir))
-        
+       
 
-    def _mailrender(self, data, template):
-        template = template + ".tmpl"
-        self.logger.debug("Rendering template '%s'" % (template))
-        text = self.env.get_template(template)
-        msg = text.render(data)
-        return msg
 
     def _smtpconnect(self):
         try:
@@ -121,59 +107,21 @@ class EmailNotification(object):
         return processed
 
 
-    def mailout(self, email, name, subject, data, template):
-        if email is None:
-            error = "Email is empty!"
-            self.logger.error(error)
-            raise ValueError(error)
-        elif self.EMAIL_REGEX.match(email) is None:
-            error = "Invalid email address!"
-            self.logger.error(error)
-            raise ValueError(error)
-        msg = self._mailrender(data, template)
-        self.send_email(email, subject, msg)
-
-
-    def mailbulk(self, email_data, template):
-        elist = []
-        for edata in email_data:
-            try:
-                email = edata["email"]
-                subject = edata["subject"]
-                data = edata["data"]
-            except Exception as e:
-                continue
-            if email is None:
-                error = "Email is empty!"
-                self.logger.error(error)
-                continue
-            elif self.EMAIL_REGEX.match(email) is None:
-                error = "Invalid email address!"
-                self.logger.error(error)
-                continue
-            msg = self._mailrender(data, template)
-            elist.append((email, subject, msg))
-        return self.send_bulk(elist)
-
-
+  
 import logging
 
 logger = logging.getLogger('email_reporter')
+logger.setLevel(logging.DEBUG)
 
 def main(argv):
     #logger.warn(argv)
-#    e = EmailNotification('smtp.gmail.com', 465, 'Johannes Felten', 'johannesfelten@gmail.com', argv[1], argv[2], 'templates', logger)
-    e = EmailNotification('mail.gmx.net', 587, 'Johannes Felten', argv[1], argv[1], argv[2], 'templates')
+
+    fromemail = argv[1]
+    login = fromemail
+    password = argv[2]
+    e = EmailNotification('mail.gmx.net', 587, 'Johannes Felten', fromemail, login, password, logger)
     
-    elist = [{
-    	"email": "johannesfelten@gmail.com",
-    	"subject": "ImmoScraper Report",
-    	"data" : { 
-            "dear": "Johannes",
-            "msg": "Hola mundo"
-        }
-    }]
-    e.mailbulk(elist, "report")
+    e.send_email('johannesfelten@gmail.com', 'Hallo', 'Na, alles klar?')
 
 
 if __name__ == "__main__":
