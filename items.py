@@ -20,5 +20,7 @@ class ImmoscraperItem(scrapy.Item):
     reported = scrapy.Field(output_processor=TakeFirst())
     first_seen = scrapy.Field(output_processor=TakeFirst())
     has_been_reported = scrapy.Field(output_processor=TakeFirst())
+    description = scrapy.Field(output_processor=TakeFirst())
+
 
  

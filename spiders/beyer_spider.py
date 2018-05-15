@@ -20,5 +20,7 @@ class BeyerSpider(scrapy.Spider):
             l.add_value('size_house',  offer.xpath("div[1]/div[3]/div[2]/text()").extract_first().replace(" m²", ""))
             l.add_value('size_ground',  offer.xpath("div[1]/div[4]/div[2]/text()").extract_first().replace(" m²", ""))
             l.add_value('picture_url', offer.xpath('a/img/@src').extract_first())
+            # TODO: follow link of url and get description 
+            l.add_value('description', 'n/a')
             yield l.load_item()
         
