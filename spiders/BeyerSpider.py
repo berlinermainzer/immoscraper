@@ -4,7 +4,7 @@ from scrapy.loader import ItemLoader
 from immoscraper.items import ImmoscraperItem
 
 class BeyerSpider(scrapy.Spider):
-    name = "beyer"
+    name = "BeyerSpider"
     start_urls = [
         'http://immobilien-bayer.de/01_efh-zfh-villen/',
     ]
