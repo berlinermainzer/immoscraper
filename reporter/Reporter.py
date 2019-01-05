@@ -42,8 +42,9 @@ class Reporter(object):
     def getData(self):
 
         entries = []
-        #testing only 2 entries-- for el in self.mongo_collection.find({'url_hash' : { '$in' : ['c8a3d1d28fc3e53cc28bbc6852bf2ae4', 'a180fc4903e1e197ce17dedc2b3b2edd']}}):
-        for el in self.mongo_collection.find({'has_been_reported' : False}):
+        #testing only 2 entries-- 
+        for el in self.mongo_collection.find({'url_hash' : { '$in' : ['c8a3d1d28fc3e53cc28bbc6852bf2ae4', 'a180fc4903e1e197ce17dedc2b3b2edd']}}):
+        #for el in self.mongo_collection.find({'has_been_reported' : False}):
             entries.append(el)
 
         logger.info('Found %d new entries.', len(entries))

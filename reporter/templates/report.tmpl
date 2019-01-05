@@ -6,7 +6,18 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.css"/>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.js"></script>
-</head>
+	
+	<style>
+	<!-- horizontal line -->
+    .col-md-10 .line {
+        padding-left : 8vw;
+        background-color:black;
+        height:1px;
+        width:100%;
+    }
+	</style>
+
+ </head>
   </head>
   <body>
     <p>
@@ -19,7 +30,15 @@
     {% for entry in data.entries %}
     <p>
         <div class="ui segment">
-            <a target="_blank" href="{{ entry.url }}" class="ui medium bordered rounded left floated image">
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-md-10">
+						<hr class = "line" />
+					</div>
+				</div> 
+			</div>
+			 
+			<a target="_blank" href="{{ entry.url }}" class="ui medium bordered rounded left floated image">
                 <img src="{{ entry.picture_url }}">
             </a>
             <thead>
@@ -54,7 +73,14 @@
     {% endfor %}
 
     <p>
-        <i class="big home icon"></i>
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-md-10">
+					<hr class = "line" />
+				</div>
+			</div> 
+		</div>
+		<i class="big home icon"></i>
         Erstellt am {{ data.now().strftime('%d.%m.%Y um %H:%M:%S') }}. <br />
     </p>
   </body>
