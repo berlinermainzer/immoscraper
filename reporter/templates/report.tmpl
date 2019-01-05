@@ -24,7 +24,7 @@
       Hallo {{ data.name }},
     </p>
     <p>
-        Es gibt folgende neuen Inserate. Viel Spaß!
+        Es gibt {{ data.entries|length }} neue Inserate.
     </p>
     
     {% for entry in data.entries %}
