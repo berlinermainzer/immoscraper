@@ -42,9 +42,12 @@ class Reporter(object):
     def getData(self):
 
         entries = []
-        for el in self.mongo_collection.find({'url_hash' : { '$in' : ['dfb8cf90b7a48f51dd4ce179b57f4ee6', '80fcd534eb9b341a09b7f85f22c3a3e7']}}):
+        #testing only 2 entries-- for el in self.mongo_collection.find({'url_hash' : { '$in' : ['c8a3d1d28fc3e53cc28bbc6852bf2ae4', 'a180fc4903e1e197ce17dedc2b3b2edd']}}):
+        for el in self.mongo_collection.find({'has_been_reported' : False}):
             entries.append(el)
 
+        logger.info('Found %d new entries.', len(entries))
+		
         data = {
             'now' : datetime.datetime.utcnow,
             'subject' : 'ImmoScraper Report',
