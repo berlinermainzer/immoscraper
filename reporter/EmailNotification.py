@@ -69,7 +69,7 @@ class EmailNotification(object):
             self.logger.warn("Sending text mail to '%s'" % (recipient))
             msg = MIMEText(content)
         else:
-            self.logger.debug("Sending html mail to '%s'" % (recipient))
+            self.logger.warn("Sending html mail to '%s'" % (recipient))
             msg = MIMEMultipart('alternative')
             msg.attach(MIMEText(content, 'html', 'utf-8'))
         msg['From'] = self.mfrom

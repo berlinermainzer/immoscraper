@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 
 from jinja2 import Environment, FileSystemLoader
 import os
@@ -5,11 +6,12 @@ import sys
 import logging
 import pymongo
 import pprint
-
+from EmailNotification import EmailNotification
+import datetime
 
 logging.basicConfig()
 logger = logging.getLogger('Reporter')
-logger.setLevel(10)
+logger.setLevel(logging.INFO)
 
 class Reporter(object):
     
@@ -44,10 +46,10 @@ class Reporter(object):
             entries.append(el)
 
         data = {
+            'now' : datetime.datetime.utcnow,
             'subject' : 'ImmoScraper Report',
             'email_receivers' : [
-                { 'name' : 'Johannes', 'email' : 'xyz@gmail.com'},
-                { 'name' : 'Kerstin', 'email' : 'abc@gmail.com'}
+                { 'name' : 'Johannes', 'email' : 'johannesfelten@gmail.com'}
             ],
             'entries' : entries
         }
@@ -55,15 +57,18 @@ class Reporter(object):
         return data
 
 def main(argv):
-    logger.info(argv)
-        
-    reporter = Reporter()
 
+    fromemail = argv[1]
+    login = fromemail
+    password = argv[2]
+    emailNotifyer = EmailNotification('mail.gmx.net', 587, 'Johannes Felten', fromemail, login, password, logger)
+    
+    reporter = Reporter()
     data = reporter.getData()
 
     email_receivers = data.pop('email_receivers')
     for receiver in email_receivers:
-        logger.info('---- Receiver: ' + receiver['name'])
+        logger.debug('---- Receiver: ' + receiver['name'])
 
         # Add receiver name to template data
         render_data = data
@@ -71,10 +76,13 @@ def main(argv):
 
         # Render message
         msg = reporter.mailrender(render_data, 'report')
-        
-        logger.info(msg)
+        logger.debug(msg)
+
+        emailNotifyer.send_email(receiver['email'], 'ImmoScraper Report', msg)
 
     reporter.close()
+
+
 
 if __name__ == "__main__":
     main(sys.argv)
